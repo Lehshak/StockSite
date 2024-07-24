@@ -1,0 +1,23 @@
+{
+    "builds": [
+      {
+        "src": "stock_site/wsgi.py",
+        "use": "@vercel/python",
+        "config": {
+          "maxLambdaSize": "15mb",
+          "runtime": "python3.9"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "stock_site/wsgi.py"
+      }
+    ],
+    "build": {
+      "env": {
+        "DJANGO_SETTINGS_MODULE": "stock_site.settings"
+      }
+    }
+  }
