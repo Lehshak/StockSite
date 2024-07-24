@@ -48,7 +48,8 @@ class Command(BaseCommand):
                     'quick_ratio': stock_data.get('quickRatio', 0.0),
                     'current_ratio': stock_data.get('currentRatio', 0.0),
                     'beta': stock_data.get('beta', 0.0),
-                    'average_volume': stock_data.get('averageVolume', 0)
+                    'average_volume': stock_data.get('averageVolume', 0),
+                    'longBusinessSummary' : stock_data.get('longBusinessSummary','N/A')
                 }
             )
             

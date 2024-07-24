@@ -31,6 +31,8 @@ class Stock(models.Model):
     beta = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     average_volume = models.BigIntegerField(null=True, blank=True)
     last_updated = models.DateTimeField(auto_now=True)
+    longBusinessSummary = models.CharField(max_length=99999)
+    
     
     def __str__(self):
         return self.ticker

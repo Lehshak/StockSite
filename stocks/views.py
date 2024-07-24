@@ -106,7 +106,8 @@ class ExpectedGrowthView(View):
                 'form': form,
                 'stock_symbol': stock_symbol,
                 'years': years,
-                'estimated_price': estimated_price
+                'estimated_price': estimated_price,
+                'current_price' : current_price
             }
             return render(request, self.template_name, context)
         
