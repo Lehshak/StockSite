@@ -1,0 +1,54 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'stocks/style.css' %}">
+
+<html>
+    <head>
+
+        
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>StocksAnalysis</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+
+        
+        <nav>
+            <ul class="navbar">
+              <li><a href="{% url 'index' %}" class="active">Find Stocks</a></li>
+              <li><a href="{% url 'compare' pk1=1 pk2=2 %}">Compare</a></li>
+              <li><a href="{% url 'expected' %}">Expected stock growth</a></li>
+            </ul>
+          </nav>
+
+    </head>
+    <body>
+
+        <h1>{{stock.ticker}}, {{stock.company_name}}</h1>
+        <h2>{{stock.sector}} sector </h2>
+
+        <p>This information was last updated on {{stock.last_updated}}</p>
+
+        <h1>Stock Statistics</h1>
+
+        <table id="stocks">
+            <tr>
+              <td>52 week high</td>
+              <td>{{stock.fifty_two_week_high}}</td>
+            </tr>
+
+            <tr>
+                <td>52 week low</td>
+                <td>{{stock.fifty_two_week_low}}</td>
+              </tr>
+  
+          </table>
+  
+
+
+
+       
+        <script src="" async defer></script>
+    </body>
+</html>

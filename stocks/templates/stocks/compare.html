@@ -1,0 +1,229 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'stocks/style.css' %}">
+
+<html>
+    <head>
+
+        
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>StocksAnalysis</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+
+        
+        <nav>
+            <ul class="navbar">
+              <li><a href="{% url 'index' %}">Find Stocks</a></li>
+              <li><a href="{% url 'compare' pk1=1 pk2=2 %}" class="active">Compare</a></li>
+              <li><a href="{% url 'expected' %}" >Expected stock growth</a></li>
+            </ul>
+          </nav>
+
+    </head>
+    <body>
+
+        <p>Pick two stocks to compare. <br> Enter the stock symbols on the form below and click the Compare button to choose your own stocks.</p>
+
+        
+   
+        <form id="compare-form">
+            <label for="symbol1">Stock Symbol 1:</label>
+            <input type="text" id="symbol1" name="symbol1">
+            <label for="symbol2">Stock Symbol 2:</label>
+            <input type="text" id="symbol2" name="symbol2">
+            <button type="submit">Compare</button>
+        </form>
+    
+        <script>
+            document.getElementById('compare-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the form from submitting the default way
+    
+                var symbol1 = document.getElementById('symbol1').value;
+                var symbol2 = document.getElementById('symbol2').value;
+    
+                fetch(`/get-stock-ids/?symbol1=${symbol1}&symbol2=${symbol2}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.pk1 && data.pk2) {
+                            var url = `{% url 'compare' pk1=1 pk2=2 %}`.replace('/1/2/', `/${data.pk1}/${data.pk2}/`);
+                            window.location.href = url;
+                        } else {
+                            alert('One or both stocks not found');
+                        }
+                    });
+            });
+        </script>
+
+        <h1>{{ stock1.company_name  }} VS {{ stock2.company_name  }} </h1>
+
+        <table id="stocks">
+            <tr>
+                <th></th>
+                <th>{{ stock1.company_name }}</th>
+                <th>{{ stock2.company_name }}</th>
+                <th>Difference</th>
+            </tr>
+            <tr>
+                <td><b>Market Price</b></td>
+                <td>{{ stock1.market_price }}</td>
+                <td>{{ stock2.market_price }}</td>
+                <td>{{ differences.market_price }}</td>
+            </tr>
+            <tr>
+                <td><b>52 Week High</b></td>
+                <td>{{ stock1.fifty_two_week_high }}</td>
+                <td>{{ stock2.fifty_two_week_high }}</td>
+                <td>{{ differences.fifty_two_week_high }}</td>
+            </tr>
+            <tr>
+                <td><b>52 Week Low</b></td>
+                <td>{{ stock1.fifty_two_week_low }}</td>
+                <td>{{ stock2.fifty_two_week_low }}</td>
+                <td>{{ differences.fifty_two_week_low }}</td>
+            </tr>
+            <tr>
+                <td><b>Market Cap</b></td>
+                <td>{{ stock1.market_cap }}</td>
+                <td>{{ stock2.market_cap }}</td>
+                <td>{{ differences.market_cap }}</td>
+            </tr>
+            <tr>
+                <td><b>Enterprise Value</b></td>
+                <td>{{ stock1.enterprise_value }}</td>
+                <td>{{ stock2.enterprise_value }}</td>
+                <td>{{ differences.enterprise_value }}</td>
+            </tr>
+            <tr>
+                <td><b>Total Revenue</b></td>
+                <td>{{ stock1.total_revenue }}</td>
+                <td>{{ stock2.total_revenue }}</td>
+                <td>{{ differences.total_revenue }}</td>
+            </tr>
+            <tr>
+                <td><b>Net Income</b></td>
+                <td>{{ stock1.net_income }}</td>
+                <td>{{ stock2.net_income }}</td>
+                <td>{{ differences.net_income }}</td>
+            </tr>
+            <tr>
+                <td><b>EBITDA</b></td>
+                <td>{{ stock1.ebitda }}</td>
+                <td>{{ stock2.ebitda }}</td>
+                <td>{{ differences.ebitda }}</td>
+            </tr>
+            <tr>
+                <td><b>P/E Ratio</b></td>
+                <td>{{ stock1.pe_ratio }}</td>
+                <td>{{ stock2.pe_ratio }}</td>
+                <td>{{ differences.pe_ratio }}</td>
+            </tr>
+            <tr>
+                <td><b>P/B Ratio</b></td>
+                <td>{{ stock1.pb_ratio }}</td>
+                <td>{{ stock2.pb_ratio }}</td>
+                <td>{{ differences.pb_ratio }}</td>
+            </tr>
+            <tr>
+                <td><b>P/S Ratio</b></td>
+                <td>{{ stock1.ps_ratio }}</td>
+                <td>{{ stock2.ps_ratio }}</td>
+                <td>{{ differences.ps_ratio }}</td>
+            </tr>
+            <tr>
+                <td><b>Earnings Growth</b></td>
+                <td>{{ stock1.earnings_growth }}</td>
+                <td>{{ stock2.earnings_growth }}</td>
+                <td>{{ differences.earnings_growth }}</td>
+            </tr>
+            <tr>
+                <td><b>Revenue Growth</b></td>
+                <td>{{ stock1.revenue_growth }}</td>
+                <td>{{ stock2.revenue_growth }}</td>
+                <td>{{ differences.revenue_growth }}</td>
+            </tr>
+            <tr>
+                <td><b>Gross Margins</b></td>
+                <td>{{ stock1.gross_margins }}</td>
+                <td>{{ stock2.gross_margins }}</td>
+                <td>{{ differences.gross_margins }}</td>
+            </tr>
+            <tr>
+                <td><b>EBITDA Margins</b></td>
+                <td>{{ stock1.ebitda_margins }}</td>
+                <td>{{ stock2.ebitda_margins }}</td>
+                <td>{{ differences.ebitda_margins }}</td>
+            </tr>
+            <tr>
+                <td><b>Operating Margins</b></td>
+                <td>{{ stock1.operating_margins }}</td>
+                <td>{{ stock2.operating_margins }}</td>
+                <td>{{ differences.operating_margins }}</td>
+            </tr>
+            <tr>
+                <td><b>ROA</b></td>
+                <td>{{ stock1.roa }}</td>
+                <td>{{ stock2.roa }}</td>
+                <td>{{ differences.roa }}</td>
+            </tr>
+            <tr>
+                <td><b>ROE</b></td>
+                <td>{{ stock1.roe }}</td>
+                <td>{{ stock2.roe }}</td>
+                <td>{{ differences.roe }}</td>
+            </tr>
+            <tr>
+                <td><b>Dividend Rate</b></td>
+                <td>{{ stock1.dividend_rate }}</td>
+                <td>{{ stock2.dividend_rate }}</td>
+                <td>{{ differences.dividend_rate }}</td>
+            </tr>
+            <tr>
+                <td><b>Dividend Yield</b></td>
+                <td>{{ stock1.dividend_yield }}</td>
+                <td>{{ stock2.dividend_yield }}</td>
+                <td>{{ differences.dividend_yield }}</td>
+            </tr>
+            <tr>
+                <td><b>Payout Ratio</b></td>
+                <td>{{ stock1.payout_ratio }}</td>
+                <td>{{ stock2.payout_ratio }}</td>
+                <td>{{ differences.payout_ratio }}</td>
+            </tr>
+            <tr>
+                <td><b>Total Debt</b></td>
+                <td>{{ stock1.total_debt }}</td>
+                <td>{{ stock2.total_debt }}</td>
+                <td>{{ differences.total_debt }}</td>
+            </tr>
+            <tr>
+                <td><b>Quick Ratio</b></td>
+                <td>{{ stock1.quick_ratio }}</td>
+                <td>{{ stock2.quick_ratio }}</td>
+                <td>{{ differences.quick_ratio }}</td>
+            </tr>
+            <tr>
+                <td><b>Current Ratio</b></td>
+                <td>{{ stock1.current_ratio }}</td>
+                <td>{{ stock2.current_ratio }}</td>
+                <td>{{ differences.current_ratio }}</td>
+            </tr>
+            <tr>
+                <td><b>Beta</b></td>
+                <td>{{ stock1.beta }}</td>
+                <td>{{ stock2.beta }}</td>
+                <td>{{ differences.beta }}</td>
+            </tr>
+            <tr>
+                <td><b>Average Volume</b></td>
+                <td>{{ stock1.average_volume }}</td>
+                <td>{{ stock2.average_volume }}</td>
+                <td>{{ differences.average_volume }}</td>
+            </tr>
+        </table>
+       
+        <script src="" async defer></script>
+    </body>
+</html>

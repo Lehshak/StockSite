@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>StocksAnalysis</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <style>
+            .bold {
+                font-weight: bold;
+            }
+
+            ul.navbar {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;
+            }
+
+            ul.navbar li {
+                float: left;
+            }
+
+            ul.navbar li a {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+            /* Change the link color to grey on hover */
+            ul.navbar li a:hover {
+                background-color: grey;
+            }
+
+            ul.navbar .active {
+                background-color: #04AA6D;
+            }
+
+            /* table css */
+            #stocks {
+                font-family: Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            #stocks td, #stocks th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            tr:hover {
+                background-color: #ddd;
+            }
+
+            #stocks th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #04AA6D;
+                color: white;
+            }
+        </style>
+
+        <nav>
+            <ul class="navbar">
+                <li><a href="{% url 'index' %}" class="active">Find Stocks</a></li>
+                <li><a href="{% url 'compare' pk1=1 pk2=2 %}">Compare</a></li>
+                <li><a href="{% url 'expected' %}">Expected stock growth</a></li>
+            </ul>
+        </nav>
+    </head>
+    <body>
+        <h1>Search for stocks</h1>
+        <p>Click on the symbol for more information on the company! Note our model only has the top 500 or so stocks.</p>
+
+        <form method="GET" action="{% url 'index' %}" class="search-form">
+            {{ search_form.search_text }}
+            <button type="submit" class="search-button">Search</button>
+        </form>
+
+        {% if stock_list %}
+        <table id="stocks">
+            <tr>
+                <th>Symbol</th>
+                <th>Company</th>
+                <th>Market Price</th>
+                <th>Market Cap</th>
+            </tr>
+
+            {% for stock in stock_list %}
+            <tr>
+                <td><a href="{% url 'detail' pk=stock.pk %}">{{ stock.ticker }}</a></td>
+                <td>{{ stock.company_name }}</td>
+                <td>{{ stock.market_price }}</td>
+                <td>{{ stock.market_cap }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No stocks available.</p>
+        {% endif %}
+      
+        <script src="" async defer></script>
+    </body>
+</html>

@@ -1,0 +1,41 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'stocks/style.css' %}">
+
+<html>
+    <head>
+
+        
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>StocksAnalysis</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+
+        
+        <nav>
+            <ul class="navbar">
+              <li><a href="{% url 'index' %}">Find Stocks</a></li>
+              <li><a href="{% url 'compare' pk1=1 pk2=2 %}">Compare</a></li>
+              <li><a href="{% url 'expected' %}" class="active" >Expected stock growth</a></li>
+            </ul>
+          </nav>
+
+    </head>
+    <body>
+        <h1>Estimate Stock Growth</h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    
+        {% if estimated_price %}
+            <h2>Estimated Price after {{ years }} years (using revenue_growth as CAGR):</h2>
+            <p>${{ estimated_price|floatformat:2 }}</p>
+        {% endif %}
+    </body>
+
+</html>
